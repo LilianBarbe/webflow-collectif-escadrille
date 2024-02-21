@@ -1,22 +1,34 @@
 import { gsap } from 'gsap/dist/gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import posthog from 'posthog-js';
 gsap.registerPlugin(ScrollTrigger);
+
+//// construct
+if (
+  !window.location.host.includes('127.0.0.1') &&
+  !window.location.host.includes('localhost') &&
+  !window.location.host.includes('webflow.io')
+) {
+  posthog.init('phc_wPpJiWuuJP2Nx2sJdyyhDEyVyBkIvVH7uT90AHUsHHK', {
+    api_host: 'https://app.posthog.com',
+  });
+}
 
 $(document).ready(function () {
   // Grabbing effect
-  var $draggableElement = $('[draggable]'); // replace this selector with your own
-  if (window.matchMedia('(pointer: fine)').matches) {
-    $draggableElement.on('mousedown', function () {
-      $(this).css('cursor', 'grabbing');
-    });
+  // var $draggableElement = $('[draggable]'); // replace this selector with your own
+  // if (window.matchMedia('(pointer: fine)').matches) {
+  //   $draggableElement.on('mousedown', function () {
+  //     $(this).css('cursor', 'grabbing');
+  //   });
 
-    // Apply draggable() method to the target element
-    $draggableElement.draggable();
+  //   // Apply draggable() method to the target element
+  //   $draggableElement.draggable();
 
-    $draggableElement.on('mouseup', function () {
-      $(this).css('cursor', 'grab');
-    });
-  }
+  //   $draggableElement.on('mouseup', function () {
+  //     $(this).css('cursor', 'grab');
+  //   });
+  // }
 
   // Wrapper les mots dans les textes
   $('.span_wrapper').each(function (index) {
@@ -158,3 +170,5 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('.w-pagination-previous').hide();
 });
+
+console.log('test');
