@@ -6,6 +6,7 @@ import Lenis from '@studio-freight/lenis';
 import Player from '@vimeo/player';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import posthog from 'posthog-js';
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import tippy from 'tippy.js';
@@ -14,6 +15,9 @@ import { setUpAccordions } from '$utils/accordeon-autoclose.ts';
 gsap.registerPlugin(ScrollTrigger);
 
 // construct
+posthog.init('phc_wPpJiWuuJP2Nx2sJdyyhDEyVyBkIvVH7uT90AHUsHHK', {
+  api_host: 'https://app.posthog.com',
+});
 setUpAccordions();
 tippy('[data-tippy-content]');
 
@@ -41,6 +45,18 @@ const videoCmsWrap = document.querySelectorAll('[data-video-cms]');
 const appearElements = document.querySelectorAll('[data-nf-card]');
 
 //// functions
+
+// posthog
+if (
+  !window.location.host.includes('127.0.0.1') &&
+  !window.location.host.includes('localhost') &&
+  !window.location.host.includes('webflow.io')
+) {
+  posthog.init('phc_wPpJiWuuJP2Nx2sJdyyhDEyVyBkIvVH7uT90AHUsHHK', {
+    api_host: 'https://app.posthog.com',
+  });
+}
+
 // video hero
 const player = new Player('vimeo', {
   id: 899188610,
