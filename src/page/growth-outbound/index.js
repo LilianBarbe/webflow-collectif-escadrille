@@ -15,9 +15,17 @@ import { setUpAccordions } from '$utils/accordeon-autoclose.ts';
 gsap.registerPlugin(ScrollTrigger);
 
 // construct
-posthog.init('phc_wPpJiWuuJP2Nx2sJdyyhDEyVyBkIvVH7uT90AHUsHHK', {
-  api_host: 'https://app.posthog.com',
-});
+// posthog
+if (
+  !window.location.host.includes('127.0.0.1') &&
+  !window.location.host.includes('localhost') &&
+  !window.location.host.includes('webflow.io')
+) {
+  posthog.init('phc_wPpJiWuuJP2Nx2sJdyyhDEyVyBkIvVH7uT90AHUsHHK', {
+    api_host: 'https://app.posthog.com',
+  });
+}
+
 setUpAccordions();
 tippy('[data-tippy-content]');
 
@@ -41,37 +49,31 @@ const controlsVideo = document.querySelector('[data-video-controls]');
 const pauseBtnVideo = document.querySelector('[data-video-pause]');
 const videoWrap = document.querySelector('[data-video-wrap]');
 const videoCmsWrap = document.querySelectorAll('[data-video-cms]');
+const videoThumb = document.querySelector('[data-thumbnail]');
 // cards
 const appearElements = document.querySelectorAll('[data-nf-card]');
 
 //// functions
-
-// posthog
-if (
-  !window.location.host.includes('127.0.0.1') &&
-  !window.location.host.includes('localhost') &&
-  !window.location.host.includes('webflow.io')
-) {
-  posthog.init('phc_wPpJiWuuJP2Nx2sJdyyhDEyVyBkIvVH7uT90AHUsHHK', {
-    api_host: 'https://app.posthog.com',
-  });
-}
-
 // video hero
-const player = new Player('vimeo', {
-  id: 899188610,
+const player = new Player(videoWrap.id, {
+  id: videoWrap.getAttribute('data-video-wrap'),
   width: videoWrap.offsetWidth,
   loop: true,
   controls: false, // Cela supprime les contrôles de lecture
   title: false, // Supprime l'affichage du titre
   byline: false, // Supprime l'affichage du créateur de la vidéo
   portrait: false, // Supprime l'image du profil du propriétaire
+  autoplay: true,
+  muted: true,
+  playsinline: true,
 });
 
-player.play();
-player.setVolume(0);
+player.on('play', function () {
+  videoThumb.classList.add('hide');
+});
 
 const firstStartVideo = () => {
+  videoThumb.classList.add('hide');
   playBtnVideo.classList.add('hide');
   controlsVideo.classList.remove('hide');
   restartVideo();
@@ -190,6 +192,7 @@ appearElements.forEach(function (card) {
 // video cours
 videoCmsWrap.forEach(function (video) {
   const videoID = video.getAttribute('data-video-cms');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const playerCours = new Player(video, {
     id: videoID,
     width: video.offsetWidth,
@@ -198,7 +201,7 @@ videoCmsWrap.forEach(function (video) {
     title: false, // Supprime l'affichage du titre
     byline: false, // Supprime l'affichage du créateur de la vidéo
     portrait: false, // Supprime l'image du profil du propriétaire
+    autoplay: true,
+    muted: true,
   });
-  playerCours.play().catch(console.error);
-  playerCours.setVolume(0).catch(console.error);
 });
