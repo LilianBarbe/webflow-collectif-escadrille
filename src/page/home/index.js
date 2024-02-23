@@ -170,5 +170,3 @@ $(document).ready(function () {
 $(document).ready(function () {
   $('.w-pagination-previous').hide();
 });
-
-console.log('test');

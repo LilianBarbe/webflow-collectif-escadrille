@@ -115,7 +115,7 @@ const swiper = new Swiper('.swiper', {
   modules: [Navigation, Pagination, Autoplay],
   loop: true,
   speed: 0,
-  allowTouchMove: false,
+  allowTouchMove: true,
   autoplay: {
     delay: 7000,
     waitForTransition: false,
@@ -192,16 +192,18 @@ appearElements.forEach(function (card) {
 // video cours
 videoCmsWrap.forEach(function (video) {
   const videoID = video.getAttribute('data-video-cms');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const playerCours = new Player(video, {
-    id: videoID,
-    width: video.offsetWidth,
-    loop: true,
-    controls: false, // Cela supprime les contrôles de lecture
-    title: false, // Supprime l'affichage du titre
-    byline: false, // Supprime l'affichage du créateur de la vidéo
-    portrait: false, // Supprime l'image du profil du propriétaire
-    autoplay: true,
-    muted: true,
-  });
+  if (videoID) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const playerCours = new Player(video, {
+      id: videoID,
+      width: video.offsetWidth,
+      loop: true,
+      controls: false, // Cela supprime les contrôles de lecture
+      title: false, // Supprime l'affichage du titre
+      byline: false, // Supprime l'affichage du créateur de la vidéo
+      portrait: false, // Supprime l'image du profil du propriétaire
+      autoplay: true,
+      muted: true,
+    });
+  }
 });
