@@ -3,7 +3,6 @@ import 'tippy.js/dist/tippy.css';
 import 'swiper/css';
 
 import Lenis from '@studio-freight/lenis';
-import Player from '@vimeo/player';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import posthog from 'posthog-js';
@@ -13,6 +12,8 @@ import tippy from 'tippy.js';
 
 import { setUpAccordions } from '$utils/accordeon-autoclose.ts';
 gsap.registerPlugin(ScrollTrigger);
+
+console.log('working local');
 
 // construct
 // posthog
@@ -42,73 +43,10 @@ const textSlideActive = document.querySelector('[slider-active]');
 const textSlideTotal = document.querySelector('[slider-total]');
 const coursTitre = document.querySelectorAll('[data-cours-titre]');
 const coursText = document.querySelectorAll('[data-cours-text]');
-// video
-const playBtnVideo = document.querySelector('[data-video-play]');
-const restartBtnVideo = document.querySelector('[data-video-restart]');
-const controlsVideo = document.querySelector('[data-video-controls]');
-const pauseBtnVideo = document.querySelector('[data-video-pause]');
-const videoWrap = document.querySelector('[data-video-wrap]');
-const videoCmsWrap = document.querySelectorAll('[data-video-cms]');
-const videoThumb = document.querySelector('[data-thumbnail]');
 // cards
 const appearElements = document.querySelectorAll('[data-nf-card]');
 
 //// functions
-// video hero
-const player = new Player(videoWrap.id, {
-  id: videoWrap.getAttribute('data-video-wrap'),
-  width: videoWrap.offsetWidth,
-  loop: true,
-  controls: false, // Cela supprime les contrôles de lecture
-  title: false, // Supprime l'affichage du titre
-  byline: false, // Supprime l'affichage du créateur de la vidéo
-  portrait: false, // Supprime l'image du profil du propriétaire
-  autoplay: true,
-  muted: true,
-  playsinline: true,
-});
-
-player.on('play', function () {
-  videoThumb.classList.add('hide');
-});
-
-const firstStartVideo = () => {
-  videoThumb.classList.add('hide');
-  playBtnVideo.classList.add('hide');
-  controlsVideo.classList.remove('hide');
-  restartVideo();
-  player.setVolume(1);
-};
-
-const restartVideo = () => {
-  player
-    .setCurrentTime(0)
-    .then(function () {
-      player.play();
-      controlsVideo.classList.remove('hide');
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
-};
-
-const pauseVideo = () => {
-  player.pause();
-};
-
-playBtnVideo.addEventListener('click', firstStartVideo);
-restartBtnVideo.addEventListener('click', restartVideo);
-pauseBtnVideo.addEventListener('click', pauseVideo);
-
-// avatars
-avatars.forEach(function (avatar) {
-  avatar.addEventListener('mouseover', function () {
-    this.classList.add('is-out');
-  });
-  avatar.addEventListener('mouseout', function () {
-    this.classList.remove('is-out');
-  });
-});
 
 // swiper
 const swiper = new Swiper('.swiper', {
@@ -187,23 +125,4 @@ appearElements.forEach(function (card) {
       start: 'top 80%', // Position de départ pour déclencher
     },
   });
-});
-
-// video cours
-videoCmsWrap.forEach(function (video) {
-  const videoID = video.getAttribute('data-video-cms');
-  if (videoID) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const playerCours = new Player(video, {
-      id: videoID,
-      width: video.offsetWidth,
-      loop: true,
-      controls: false, // Cela supprime les contrôles de lecture
-      title: false, // Supprime l'affichage du titre
-      byline: false, // Supprime l'affichage du créateur de la vidéo
-      portrait: false, // Supprime l'image du profil du propriétaire
-      autoplay: true,
-      muted: true,
-    });
-  }
 });
